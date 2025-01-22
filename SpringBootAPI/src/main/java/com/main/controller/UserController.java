@@ -49,7 +49,7 @@ public class UserController {
     @DeleteMapping("/deleteUser/{accountNo}")
     public ResponseEntity<?> deleteUser(@PathVariable long accountNo) {
         userService.deleteUser(accountNo);
-        return ResponseEntity.ok().body("User Account Deleted Successfully");
+        return ResponseEntity.ok().body("User Account Deleted Successfully....");
 
     }
 
