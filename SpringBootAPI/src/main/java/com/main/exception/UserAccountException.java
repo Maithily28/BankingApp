@@ -4,10 +4,14 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 
-@Getter
+
 public class UserAccountException extends RuntimeException {
 
     private final HttpStatus status;
+
+    public HttpStatus getStatus() {
+        return status;
+    }
 
     public UserAccountException(String message, HttpStatus status) {
         super(message);

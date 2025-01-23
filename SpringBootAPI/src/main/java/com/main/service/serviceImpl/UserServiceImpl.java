@@ -2,10 +2,13 @@ package com.main.service.serviceImpl;
 //The UserServiceImpl class processes the business logic for user operations. It interacts with the repository layer
 
 import com.main.dto.BalanceDto;
+import com.main.dto.FixedDepositDto;
 import com.main.dto.TransactionDto;
 import com.main.dto.UserDto;
 import com.main.exception.UserAccountException;
+import com.main.model.FixedDeposit;
 import com.main.model.UserAccount;
+import com.main.repository.BalanceRepository;
 import com.main.repository.UserRepository;
 import com.main.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +24,9 @@ public class UserServiceImpl implements UserService
 {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BalanceRepository balanceRepository;
+
     @Override
     public UserAccount createUser(UserDto userDto) //for creating new user
     {
@@ -56,7 +62,7 @@ public class UserServiceImpl implements UserService
       UserAccount userAccount =  userRepository.findByAccountNo(accountNo);
         if(userAccount == null)
         {
-            throw  new UserAccountException("Account does not exist  : "+ userAccount.getAccountNo(), HttpStatus.BAD_REQUEST );
+            throw  new UserAccountException("Account does not exist  : "+ accountNo, HttpStatus.BAD_REQUEST );
         }
         UserDto userDto= new UserDto();
         userDto.setId(userAccount.getId());
@@ -119,15 +125,22 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public void  deleteUser(long accountNo){} //for deleting user account
-
-    @Override
-    public BalanceDto getBalance(long accountNo)
+    public void  deleteUser(long accountNo)//for deleting user account
     {
         UserAccount userAccount =  userRepository.findByAccountNo(accountNo);
         if(userAccount == null)
         {
-            throw  new UserAccountException("Account does not exist  : "+ userAccount.getAccountNo(), HttpStatus.BAD_REQUEST );
+            throw  new UserAccountException("Account does not exist  : "+ accountNo, HttpStatus.BAD_REQUEST );
+        }
+    }
+
+    @Override
+    public BalanceDto getBalance(long accountNo) //for checking the balance in the account
+    {
+        UserAccount userAccount =  userRepository.findByAccountNo(accountNo);
+        if(userAccount == null)
+        {
+            throw  new UserAccountException("Account does not exist  : "+ accountNo, HttpStatus.BAD_REQUEST );
         }
         BalanceDto balanceDto = new BalanceDto();
         balanceDto.setAccountNo(userAccount.getAccountNo());
@@ -138,7 +151,7 @@ public class UserServiceImpl implements UserService
     }
 
     @Override
-    public void doTransaction(TransactionDto transactionDto)
+    public void doTransaction(TransactionDto transactionDto) //for doing the transaction from one account to another account
     {
         log.info("enter in method doTransaction");
 
@@ -151,11 +164,41 @@ public class UserServiceImpl implements UserService
 
        fromUser.setBalance(fromUser.getBalance()-transactionDto.getAmount());
        userRepository.save(fromUser);
-
-       toUser.setBalance(toUser.getBalance()+transactionDto.getToAccount());
+       double toBalance = toUser.getBalance()+transactionDto.getAmount();
+       toUser.setBalance(toBalance);
        userRepository.save(toUser);
 
     }
 
+    @Override
+    public FixedDeposit doFixedDeposit(FixedDepositDto fixedDepositDto) //for doing fixed deposit
+    {
+        FixedDeposit fixedDeposit = new FixedDeposit();
+        fixedDeposit.setUserAccount(userRepository.findByAccountNo(fixedDepositDto.getAccountNo()));
+        fixedDeposit.setAccountNo(fixedDepositDto.getAccountNo());
+        fixedDeposit.setDuration(fixedDepositDto.getDuration());
+        fixedDeposit.setInterest(fixedDepositDto.getInterest());
+        fixedDeposit.setAmount(fixedDepositDto.getAmount());
+        double simpleInterest=((fixedDepositDto.getAmount() * fixedDeposit.getDuration() * fixedDeposit.getInterest()/(100)));
+        double TotAmount=((fixedDepositDto.getAmount() + simpleInterest));
+        fixedDeposit.setTotalAmount(TotAmount);
+
+        return balanceRepository.save(fixedDeposit);
+    }
+
+    @Override
+    public FixedDepositDto getFixedDeposit(long accountNo)//for showing the details of fixed deposit
+    {
+        FixedDeposit fixedDeposit1 = balanceRepository.findByAccountNo(accountNo);
+
+        FixedDepositDto fixedDepositDto = new FixedDepositDto();
+
+        fixedDepositDto.setAccountNo(fixedDeposit1.getUserAccount().getAccountNo());
+        fixedDepositDto.setDuration(fixedDeposit1.getDuration());
+        fixedDepositDto.setInterest(fixedDeposit1.getInterest());
+        fixedDepositDto.setAmount(fixedDeposit1.getAmount());
+
+        return fixedDepositDto;
+    }
 
 }

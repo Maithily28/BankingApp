@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface UserRepository extends JpaRepository<UserAccount, Long >
 {
-    public UserAccount findByAccountNo(long accountNo);
+     UserAccount findByAccountNo(long accountNo);
 
 }
