@@ -19,4 +19,5 @@ public interface UserService {
     public void doTransaction(TransactionDto transactionDto);
     public FixedDeposit doFixedDeposit(FixedDepositDto fixedDepositDto);
     public FixedDepositDto getFixedDeposit(long accountNo);
+    public List<FixedDeposit> getAllFD(long accountNo);
 }
