@@ -13,6 +13,4 @@ public class CustomGlobalExceptionHandler {
         ErrorResponse errorResponse = new ErrorResponse("User Account Error", ex.getMessage());
         return new ResponseEntity<>(errorResponse, ex.getStatus());
     }
-
-
 }

@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -60,7 +61,7 @@ public class UserServiceImpl implements UserService
     {
 
       UserAccount userAccount =  userRepository.findByAccountNo(accountNo);
-        if(userAccount == null)
+        if(Objects.isNull(userAccount))
         {
             throw  new UserAccountException("Account does not exist  : "+ accountNo, HttpStatus.BAD_REQUEST );
         }
@@ -131,6 +132,8 @@ public class UserServiceImpl implements UserService
         if(userAccount == null)
         {
             throw  new UserAccountException("Account does not exist  : "+ accountNo, HttpStatus.BAD_REQUEST );
+        }else {
+            userRepository.delete(userAccount);
         }
     }
 
@@ -200,5 +203,12 @@ public class UserServiceImpl implements UserService
 
         return fixedDepositDto;
     }
+
+    @Override
+    public List<FixedDeposit> getAllFD(long accountNo)
+    {
+        return balanceRepository.findAllByAccountNo(accountNo);
+    }
+
 
 }

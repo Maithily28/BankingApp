@@ -86,4 +86,10 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/getAllFD/{accountNo}")
+    public List<FixedDeposit> getAllFD(@PathVariable long accountNo)
+    {
+        return userService.getAllFD(accountNo);
+    }
 }
