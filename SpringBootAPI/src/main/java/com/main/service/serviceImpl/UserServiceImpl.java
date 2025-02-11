@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService
         userAccount.setAccountType(userDto.getAccountType());
         userAccount.setBalance(userDto.getBalance());
 
-        return userRepository.save(userAccount); //method is called to save the user in the database.
+        UserAccount save = userRepository.save(userAccount);
+        return save;//method is called to save the user in the database.
     }
 
     @Override
@@ -82,7 +83,7 @@ public class UserServiceImpl implements UserService
     @Override
     public UserDto updateUser(UserDto userDto) //for updating user account
     {
-        try {
+
             UserAccount userAccount2 = userRepository.findByAccountNo(userDto.getAccountNo());
             if (userAccount2 == null) {
                 throw new UserAccountException(
@@ -118,10 +119,7 @@ public class UserServiceImpl implements UserService
             userDto1.setBalance(userAccount1.getBalance());
 
             return userDto1;
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
-            throw e; // Re-throw the exception to be handled by the exception handler
-        }
+
 
     }
 

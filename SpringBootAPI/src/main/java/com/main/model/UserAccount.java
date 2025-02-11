@@ -42,4 +42,5 @@ public class UserAccount
 
     @Column(name = "balance")
     private double balance;
+
 }
