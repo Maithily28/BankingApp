@@ -1,3 +1,5 @@
+package com.example.SpringBootAPI;
+
 import com.main.constant.AccountType;
 import com.main.dto.FixedDepositDto;
 import com.main.dto.TransactionDto;
@@ -14,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.util.ArrayList;
 
 @ExtendWith(MockitoExtension.class)
@@ -189,6 +190,17 @@ public class UserServiceImplTest {
 
         Mockito.when(balanceRepository.findByAccountNo(Mockito.anyLong())).thenReturn(fixedDeposit);
         Assertions.assertDoesNotThrow(() -> userServiceImpl.getFixedDeposit(fixedDeposit.getAccountNo()));
+    }
+
+    @Test
+    void getAllFDTest()
+    {
+        ArrayList<FixedDeposit> list = new ArrayList<>();
+        FixedDeposit fixedDeposit = new FixedDeposit();
+        fixedDeposit.setAmount(500);
+        list.add(fixedDeposit);
+        Mockito.when(balanceRepository.findAllByAccountNo(fixedDeposit.getAccountNo())).thenReturn(list);
+        Assertions.assertDoesNotThrow(() -> userServiceImpl.getAllFD(fixedDeposit.getAccountNo()));
     }
 
 }
