@@ -2,9 +2,7 @@ package com.main.service;
 
 import com.main.dto.LoanDto;
 import com.main.dto.LoanPaymentDto;
-import com.main.dto.UserDto;
-import com.main.model.Loan;
-import com.main.model.UserAccount;
+import com.main.entity.Loan;
 
 import java.util.List;
 

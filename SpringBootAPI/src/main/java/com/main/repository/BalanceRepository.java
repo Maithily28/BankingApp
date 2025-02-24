@@ -1,6 +1,6 @@
 package com.main.repository;
 
-import com.main.model.FixedDeposit;
+import com.main.entity.FixedDeposit;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

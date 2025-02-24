@@ -1,9 +1,7 @@
 package com.main.controller;
 
 import com.main.dto.*;
-import com.main.model.FixedDeposit;
-import com.main.model.Loan;
-import com.main.model.UserAccount;
+import com.main.entity.Loan;
 import com.main.service.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

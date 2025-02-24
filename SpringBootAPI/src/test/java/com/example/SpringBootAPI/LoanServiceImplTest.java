@@ -2,8 +2,7 @@ package com.example.SpringBootAPI;
 
 import com.main.dto.LoanDto;
 import com.main.dto.LoanPaymentDto;
-import com.main.dto.UserDto;
-import com.main.model.Loan;
+import com.main.entity.Loan;
 import com.main.repository.LoanRepository;
 import com.main.repository.UserRepository;
 import com.main.service.serviceImpl.LoanServiceImpl;
