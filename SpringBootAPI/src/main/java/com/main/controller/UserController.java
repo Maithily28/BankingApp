@@ -9,15 +9,32 @@ import com.main.entity.FixedDeposit;
 import com.main.entity.UserAccount;
 import com.main.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("/user-accounts")
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @GetMapping
+    public Page<UserAccount> getSortedUserAccounts(@RequestParam int page,
+                                                   @RequestParam int size,
+                                                   @RequestParam(defaultValue = "id") String sortBy,
+                                                   @RequestParam(defaultValue = "true") boolean ascending)
+    {
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return userService.getUserAccounts(page, size);
+    }
+
 
     @PostMapping("/adduser")
     public ResponseEntity<UserAccount> createUser(@RequestBody UserDto userDTO) //Maps the HTTP request body to a Java object (UserDto)

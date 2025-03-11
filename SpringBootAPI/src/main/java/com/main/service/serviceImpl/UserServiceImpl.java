@@ -13,9 +13,13 @@ import com.main.repository.UserRepository;
 import com.main.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
+import org.springframework.data.domain.Sort;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,6 +31,12 @@ public class UserServiceImpl implements UserService
     private UserRepository userRepository;
     @Autowired
     private BalanceRepository balanceRepository;
+
+    public Page<UserAccount> getUserAccounts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return userRepository.findAll(pageable);
+    }
+
 
     @Override
     public UserAccount createUser(UserDto userDto) //for creating new user
