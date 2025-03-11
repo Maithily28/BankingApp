@@ -6,6 +6,7 @@ import com.main.dto.TransactionDto;
 import com.main.dto.UserDto;
 import com.main.entity.FixedDeposit;
 import com.main.entity.UserAccount;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -20,4 +21,5 @@ public interface UserService {
     public FixedDeposit doFixedDeposit(FixedDepositDto fixedDepositDto);
     public FixedDepositDto getFixedDeposit(long accountNo);
     public List<FixedDeposit> getAllFD(long accountNo);
+    Page<UserAccount> getUserAccounts(int page, int size);
 }
